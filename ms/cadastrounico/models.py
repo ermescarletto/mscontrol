@@ -16,6 +16,7 @@ class Estado(models.Model):
     nome = models.CharField(max_length=255)
     uf = models.CharField(max_length=2)
     pais = models.ForeignKey(Pais, on_delete=models.CASCADE)
+    codigo_ibge = models.IntegerField()
 
 
     def __str__(self):

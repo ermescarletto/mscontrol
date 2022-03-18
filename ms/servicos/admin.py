@@ -3,15 +3,11 @@ from .models import *
 # Register your models here.
 
 
-
-
 class ListaTipoServico(admin.ModelAdmin):
     list_display = ('id', 'descricao','ambientes')
     list_display_links = ('descricao',)
     filter_horizontal = ('tipo_ambiente',)
     list_filter = ('tipo_ambiente',)
-
-
 
     def ambientes(self, obj):
         text = ''
@@ -20,5 +16,15 @@ class ListaTipoServico(admin.ModelAdmin):
             text = text + i.descricao + "\n"
         return text
 
+class ListaCadastroChecklist(admin.ModelAdmin):
+
+    filter_horizontal = ('itens',)
+
+
+
 admin.site.register(TipoServico,ListaTipoServico)
 admin.site.register(Servico)
+admin.site.register(CadastroItemChecklist)
+admin.site.register(CadastroChecklist,ListaCadastroChecklist)
+admin.site.register(Checklist)
+

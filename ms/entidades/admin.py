@@ -19,15 +19,9 @@ class ListaContrato(admin.ModelAdmin):
     busca_entidade.admin_order_field = 'entidade__nome_razao'
 
 class ListaTipoAmbiente(admin.ModelAdmin):
-    list_display = ('id','busca_entidade','descricao','risco','entidade','controla_checklist')
+    list_display = ('id','descricao','risco','controla_checklist')
     list_editable = ('controla_checklist',)
-    list_display_links = ('busca_entidade',)
 
-    def busca_entidade(self,obj):
-        return obj.entidade.nome_razao
-
-    busca_entidade.short_description = 'Entidade'
-    busca_entidade.admin_order_field = 'entidade__nome_razao'
 
 class ListaAmbiente(admin.ModelAdmin):
     list_display = ('id','busca_entidade','busca_tipo','descricao','codigo','area','andar','bloco')
@@ -41,7 +35,7 @@ class ListaAmbiente(admin.ModelAdmin):
 
 
     def busca_entidade(self,obj):
-        return obj.tipo_ambiente.entidade.nome_razao
+        return obj.entidade.nome_razao
 
     busca_entidade.short_description = 'Entidade'
     busca_entidade.admin_order_field = 'entidade__nome_razao'

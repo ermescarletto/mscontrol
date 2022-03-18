@@ -40,7 +40,6 @@ class TipoAmbiente(models.Model):
     ]
     descricao = models.CharField(max_length=255)
     risco = models.CharField(max_length=1,choices=RISCO)
-    entidade = models.ForeignKey(Entidade,on_delete=models.PROTECT)
     controla_checklist = models.BooleanField(default=True)
 
     def __str__(self):
@@ -48,11 +47,12 @@ class TipoAmbiente(models.Model):
 
 class Ambiente(models.Model):
     tipo_ambiente = models.ForeignKey(TipoAmbiente,on_delete=models.PROTECT)
-    descricao = models.CharField(max_length=20)
+    descricao = models.CharField(max_length=255)
     codigo = models.CharField(max_length=20, blank=True)
     area = models.DecimalField(decimal_places=2,max_digits=8)
     andar = models.CharField(max_length=20,blank=True)
     bloco = models.CharField(max_length=20,blank=True)
+    entidade = models.ForeignKey(Entidade,on_delete=models.PROTECT)
 
     def __str__(self):
         return self.descricao
