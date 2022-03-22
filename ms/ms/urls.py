@@ -29,10 +29,10 @@ admin.site.site_title = 'MS Control'
 
 
 urlpatterns = [
-    path('', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('api/', include('api.urls', namespace='api')),
     path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
-    path('ms/',include('servicos.urls', namespace='home'))
+    path('',include('servicos.urls', namespace='home'))
 
 
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
