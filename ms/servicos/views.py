@@ -12,6 +12,15 @@ import qrcode.image.svg
 from io import BytesIO
 
 
+class IndexView(View):
+    def get(self,request):
+        context = {
+            'nome' : 'MS Control',
+        }
+
+        return render(request, "index.html", context=context)
+
+
 class ChecklistView(APIView):
     """
     API View to create or get a list of all the registered

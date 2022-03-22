@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import ChecklistView, LoginView, DashboardView, ChecklistFormView, QrCodeView
+from .views import *
 from django.contrib.auth.decorators import login_required
 
 app_name = 'api'
 
 urlpatterns = [
+    path('',IndexView.as_view(),name='index'),
     path('checklist/',ChecklistView.as_view(),name='checklist'),
     path('checklist/<int:entidade_id>/<int:checklist_id>/', ChecklistFormView.as_view(),name='checklist_servico'),
     path('login/',LoginView.as_view(),name='login'),
