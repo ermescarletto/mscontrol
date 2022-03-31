@@ -52,6 +52,7 @@ class CadastroChecklist(models.Model):
     def __str__(self):
         return self.descricao
 
+
 class Checklist(models.Model):
     inicio_checklist = models.DateTimeField()
     ambiente = models.ForeignKey('entidades.Ambiente',on_delete=models.PROTECT)
@@ -75,12 +76,6 @@ class Checklist(models.Model):
 
     def __str__(self):
         return 'Checklist: {} Item: {} Valor: {} Ambiente: {} Servico: {}'.format(self.id,self.item,self.item_value(),self.ambiente,self.servico)
-
-
-
-
-
-
 
 
 

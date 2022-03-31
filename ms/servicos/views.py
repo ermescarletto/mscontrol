@@ -13,13 +13,26 @@ from io import BytesIO
 
 
 class IndexView(View):
+
+
+
+
+
     def get(self,request):
-        context = {
-            'nome' : 'MS Control',
-        }
+        if request.user.is_authenticated:
+            context = {
+                'nome' : 'MS Control',
 
-        return render(request, "index.html", context=context)
+            }
+            print(context)
 
+            return render(request, "dashboard.html", context=context)
+        else:
+            context = {
+                'nome': 'Deslogou',
+            }
+            print(context)
+            return render(request, "index.html", context=context)
 
 class ChecklistView(APIView):
     """
