@@ -15,13 +15,14 @@ Including another URLconf
 """
 
 import sys
-from django.contrib import admin
+from django.contrib import admin, auth
 from django.urls import path,include
 from rest_framework.authtoken import views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.http import HttpResponse
 from django.core.management import execute_from_command_line
+from servicos.views import IndexView
 
 admin.site.site_header = 'MS Control'
 admin.site.index_title = 'Administração do Sistema'
@@ -29,10 +30,12 @@ admin.site.site_title = 'MS Control'
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+
+    path('', IndexView.as_view(), name='index'),
+    path('admin/', admin.site.urls, name='admin'),
+    path('user/', include('django.contrib.auth.urls')),  # new
     path('api/', include('api.urls', namespace='api')),
     path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
-    path('',include('servicos.urls', namespace='home'))
-
+    path('servicos/', include('servicos.urls', namespace='servicos')),
 
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

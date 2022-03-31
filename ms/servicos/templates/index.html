@@ -44,7 +44,7 @@
   <script src="https://kit.fontawesome.com/367cfb9d06.js" crossorigin="anonymous"></script>
 
   </head>
-  <body class="bg-dark">
+  <body>
 
 <header>
   <nav class="navbar navbar-expand-md navbar-light fixed-top bg-white">
@@ -59,13 +59,14 @@
             <a class="nav-link" aria-current="page" href="#">Início</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Serviços</a>
+            <a class="nav-link" href="{% url 'servicos:checklist' %}">Serviços</a>
           </li>
           <li class="nav-item">
             <a class="nav-link">Contato</a>
           </li>
+
           <li class="nav-item">
-            <a class="nav-link">Entrar</a>
+            <a class="nav-link" href="/user/login" >Login</a>
           </li>
         </ul>
       </div>
