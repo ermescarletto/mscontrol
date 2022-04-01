@@ -14,13 +14,13 @@
     <title>MS Control - Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/367cfb9d06.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -34,10 +34,10 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                <div class="sidebar-brand-icon">
+                    <img src="{% static '/img/logo80x40.png' %}"/>
                 </div>
-                <div class="sidebar-brand-text mx-3">MS Control</div>
+
             </a>
 
             <!-- Divider -->
@@ -45,10 +45,43 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{% url 'index' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Menu</span></a>
             </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">
+                Serviços
+            </div>
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    <i class="fa fa-houzz" aria-hidden="true"></i>
+                    <span>Entidade</span>
+                </a>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner">
+                        <a class="collapse-item" href="#">Ambientes</a>
+                    </div>
+                </div>
+             </li>
+                       <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    <span>Checklists</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner">
+                        <a class="collapse-item" href="#">Serviços</a>
+                        <a class="collapse-item" href="#">Checklists</a>
+                    </div>
+                </div>
+             </li>
+
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -60,16 +93,16 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                    aria-expanded="true" aria-controls="collapseThree">
+                    <i class="fa fa-line-chart" aria-hidden="true"></i>
                     <span>Gerenciais</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner">
-                        <a class="collapse-item" href="buttons.html">Checklist</a>
-                        <a class="collapse-item" href="cards.html">Ambientes</a>
-                        <a class="collapse-item" href="cards.html">Serviços</a>
+                        <a class="collapse-item" href="#">Checklist</a>
+                        <a class="collapse-item" href="#">Ambientes</a>
+                        <a class="collapse-item" href="#">Serviços</a>
                     </div>
                 </div>
             </li>
@@ -84,21 +117,15 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner">
-                        <a class="collapse-item" href="utilities-color.html">Serviços Executados</a>
-                        <a class="collapse-item" href="utilities-border.html">Checklists Preenchidos</a>
-                        <a class="collapse-item" href="utilities-animation.html">Ambientes</a>
-                        <a class="collapse-item" href="utilities-other.html">Contratos</a>
+                        <a class="collapse-item" href="#">Serviços Executados</a>
+                        <a class="collapse-item" href="#">Checklists Preenchidos</a>
+                        <a class="collapse-item" href="#">Ambientes</a>
+                        <a class="collapse-item" href="#">Contratos</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Agendamentos
-            </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
 
@@ -284,7 +311,7 @@
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">EVOLUÇÃO NO PERÍODO</h6>
                                     <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                        <a class="dropdown-toggle" href="#" role="button"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                         </a>
