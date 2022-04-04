@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Serviços</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Descrição</th>
+                                            <th>Risco</th>
+                                            <th>Tipo de Ambiente</th>
+                                            <th>QrCode</th>
+                                            <th>Visualizar</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Codigo</th>
+                                            <th>Descrição</th>
+                                            <th>Risco</th>
+                                            <th>Tipo de Ambiente</th>
+                                            <th>QrCode</th>
+                                            <th>Visualizar</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for i in servicos %}
+                                        <tr>
+                                            <td> {{ i.id }}</td>
+                                            <td> {{ i.descricao }}</td>
+                                            <td> {{ i.risco }}</td>
+                                            <td>
+                                            <ul>
+                                                {% for x in i.tipo_ambiente.all %}
+
+                                                <li>{{ x.descricao }}</li>
+
+                                                {% endfor %}
+                                            </ul>
+                                            </td>
+                                            <td><i class="fa fa-qrcode" aria-hidden="true"></i></td>
+                                            <td><i class="fa fa-search" aria-hidden="true"></i></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+{% endblock %}

@@ -9,5 +9,7 @@ urlpatterns = [
     path('checklist/<int:entidade_id>/<int:checklist_id>/', ChecklistFormView.as_view(),name='checklist_servico'),
     path('login/',LoginView.as_view(),name='login'),
     path('dashboard/',login_required(DashboardView.as_view()),name='dashboard'),
-    path('qrcode/<int:checklist_id>/<int:ambiente_id>/', login_required(QrCodeView.as_view()), name='qrcode')
+    path('qrcode/<int:checklist_id>/<int:ambiente_id>/', login_required(QrCodeView.as_view()), name='qrcode'),
+    path('ambientes/',AmbientesView.as_view(), name='ambientes'),
+    path('servicos/',ServicosView.as_view(), name='servicos')
 ]
