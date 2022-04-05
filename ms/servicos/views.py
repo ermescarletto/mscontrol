@@ -66,23 +66,18 @@ class ServicosView(View):
         return render(request, "servicos.html", context=context)
 
 
-
-
-
-
-
-
 class ChecklistView(APIView):
     """
-    API View to create or get a list of all the registered
+    API View to create or get a lqrcodeist of all the registered
     users. GET request returns the registered users whereas
     a POST request allows to create a new user.
     """
-    permission_classes = [IsAdminUser]
 
-    def get(self, format=None):
-        checklist = CadastroChecklist.objects.all()
+
+    def get(self,  checklist_id, ambiente_id, format=None):
+        checklist = CadastroChecklist.objects.all(pk=checklist_id)
         serializer = CadastroChecklistSerializer(checklist, many=True)
+        serializer.add(ambiente_id)
         return Response(serializer.data)
 
     def post(self, request):
@@ -140,14 +135,12 @@ class QrCodeView(View):
         cadastro_checklist = CadastroChecklist.objects.get(pk=checklist_id)
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
         itens = cadastro_checklist.itens.all().values('id','descricao')
-        url = base + 'checklist/{}/{}/'.format(checklist_id,ambiente_id)
-        print(ambiente)
-        print(itens)
-
+        url = base + 'control/check/{}/{}/'.format(checklist_id,ambiente_id)
         context = {'checklists' : cadastro_checklist , 'urls' : url, 'ambientes' : ambiente}
         factory = qrcode.image.svg.SvgImage
         img = qrcode.make(request.POST.get("Checklist", url), image_factory=factory, box_size=20)
         stream = BytesIO()
         img.save(stream)
         context["svg"] = stream.getvalue().decode()
+        print(url)
         return render(request, "qrcode.html", context=context)
