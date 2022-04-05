@@ -36,6 +36,6 @@ urlpatterns = [
     path('user/', include('django.contrib.auth.urls')),  # new
     path('api/', include('api.urls', namespace='api')),
     path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
-    path('servicos/', include('servicos.urls', namespace='servicos')),
+    path('control/', include('servicos.urls', namespace='control')),
 
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

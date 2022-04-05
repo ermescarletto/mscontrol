@@ -13,15 +13,17 @@ from io import BytesIO
 
 
 class IndexView(View):
-
-
-
-
-
     def get(self,request):
+
+        ambientes = emd.Ambiente.objects.all()
+        soma_ambientes = 0
+
         if request.user.is_authenticated:
+            for i in ambientes:
+                soma_ambientes += 1
             context = {
                 'nome' : 'MS Control',
+                'total_ambientes' : soma_ambientes,
 
             }
             print(context)
@@ -33,6 +35,42 @@ class IndexView(View):
             }
             print(context)
             return render(request, "index.html", context=context)
+
+
+class AmbientesView(View):
+    def get(self,request):
+        ambientes = emd.Ambiente.objects.all()
+        somaambientes = 0
+        for i in ambientes:
+            somaambientes += 1
+        context = {
+            'ambientes' : ambientes,
+            'soma' : somaambientes,
+
+        }
+
+        return render(request, "ambientes.html", context=context)
+
+
+class ServicosView(View):
+    def get(self,request):
+        servicos = TipoServico.objects.all()
+
+
+        context = {
+            'servicos' : servicos,
+
+
+        }
+
+        return render(request, "servicos.html", context=context)
+
+
+
+
+
+
+
 
 class ChecklistView(APIView):
     """
