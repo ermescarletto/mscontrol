@@ -41,6 +41,7 @@ class TipoAmbiente(models.Model):
     descricao = models.CharField(max_length=255)
     risco = models.CharField(max_length=1,choices=RISCO)
     controla_checklist = models.BooleanField(default=True)
+    checklists_relacionados = models.ManyToManyField('servicos.CadastroChecklist')
 
     def __str__(self):
         return self.descricao

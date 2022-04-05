@@ -20,8 +20,9 @@ class ListaContrato(admin.ModelAdmin):
 
 class ListaTipoAmbiente(admin.ModelAdmin):
     list_display = ('id','descricao','risco','controla_checklist')
+    list_display_links = ('id','descricao')
     list_editable = ('controla_checklist',)
-
+    filter_horizontal = ('checklists_relacionados',)
 
 class ListaAmbiente(admin.ModelAdmin):
     list_display = ('id','busca_entidade','busca_tipo','descricao','codigo','area','andar','bloco')

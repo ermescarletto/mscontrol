@@ -38,7 +38,14 @@
                                             <td> {{ i.entidade }}</td>
                                             <td> {{ i.descricao }}</td>
                                             <td> {{ i.area }}</td>
-                                            <td><i class="fa fa-qrcode" aria-hidden="true"></i></td>
+                                            <td>
+                                            {% for x in i.tipo_ambiente.checklists_relacionados.all %}
+                                                <ul>
+                                                    <li><a href="{% url 'control:qrcode' x.id i.id %}" target="_blank">{{ x.descricao }} <i class="fa fa-qrcode" aria-hidden="true"></i></a></li>
+                                                </ul>
+
+                                            {% endfor %}
+                                            </td>
                                             <td><i class="fa fa-search" aria-hidden="true"></i></td>
                                         </tr>
                                     {% endfor %}
