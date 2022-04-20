@@ -59,10 +59,12 @@
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
                aria-expanded="true" aria-controls="collapseOne">
                 <i class="fa fa-houzz" aria-hidden="true"></i>
-                <span>Entidade</span>
+                <span>Cadastros</span>
             </a>
             <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner">
+                    <a class="collapse-item" href="{% url 'control:entidades' %}" >Entidades</a>
+                    <a class="collapse-item" href="#">Tipos de Ambientes</a>
                     <a class="collapse-item" href="{% url 'control:ambientes' %}" >Ambientes</a>
                 </div>
             </div>
@@ -261,6 +263,7 @@
     <!-- Page level custom scripts -->
     <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+    <script src="{% static 'js/control.js' %}"></script>
 
 
 </body>

@@ -61,7 +61,6 @@ class Checklist(models.Model):
     item = models.ForeignKey(CadastroItemChecklist, on_delete=models.PROTECT)
     valor_item = models.BooleanField(blank=True)
     imagem = models.ImageField(blank=True)
-    observacao = models.TextField(blank=True)
     fim_checklist = models.DateTimeField()
 
     def item_value(self):
