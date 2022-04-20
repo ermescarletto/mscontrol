@@ -1,11 +1,11 @@
-from django.views import View
+from django.views import View, generic
 from .serializers import CadastroChecklistSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAdminUser
 from .models import *
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 import entidades.models as emd
 import qrcode
 import qrcode.image.svg
@@ -26,15 +26,34 @@ class IndexView(View):
                 'total_ambientes' : soma_ambientes,
 
             }
-            print(context)
+
 
             return render(request, "dashboard.html", context=context)
         else:
             context = {
                 'nome': 'Deslogou',
             }
-            print(context)
+
             return render(request, "index.html", context=context)
+
+
+class EntidadesView(View):
+    def get(self,request):
+        entidades = emd.Entidade.objects.all()
+        context = {
+            'entidades' : entidades
+        }
+        return render(request,"entidades.html", context=context)
+
+
+class EntidadeDelete(generic.DeleteView):
+    model = emd.Entidade
+    success_url = "/"
+    template_name = "ambientes.html"
+
+
+
+
 
 
 class AmbientesView(View):
@@ -48,7 +67,6 @@ class AmbientesView(View):
             'soma' : somaambientes,
 
         }
-
         return render(request, "ambientes.html", context=context)
 
 
@@ -104,43 +122,43 @@ class LoginView(View):
         return render(request, self.template_name)
 
 
-
 class DashboardView(View):
     template_name = 'dashboard.html'
-
     def get(self, request, *args, **kwargs):
-
         checklists = Checklist.objects.all()
-        print(checklists)
-
         return render(request, self.template_name, context={'checklists' : checklists})
 
 
 class ChecklistFormView(View):
     template_name = 'checklist.html'
-
     def get(self,request,checklist_id, *args, **kwargs):
-
         checklist = get_object_or_404(CadastroChecklist, pk=checklist_id)
-        print(checklist)
-        print(checklist.itens)
-
-        print(checklist_id)
-
         return render(request, self.template_name, context={'checklists' : checklist})
 
 class QrCodeView(View):
-    def get(self,request,checklist_id,ambiente_id):
-        base = 'http://localhost:8000/'
-        cadastro_checklist = CadastroChecklist.objects.get(pk=checklist_id)
+    def get(self,request,ambiente_id):
+        base = 'http://192.168.3.34:8000'
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
-        itens = cadastro_checklist.itens.all().values('id','descricao')
-        url = base + 'control/check/{}/{}/'.format(checklist_id,ambiente_id)
-        context = {'checklists' : cadastro_checklist , 'urls' : url, 'ambientes' : ambiente}
+        url = base + '/control/check/{}/'.format(ambiente_id)
+        context = {'urls' : url, 'ambientes' : ambiente}
         factory = qrcode.image.svg.SvgImage
-        img = qrcode.make(request.POST.get("Checklist", url), image_factory=factory, box_size=20)
+        img = qrcode.make(request.POST.get("Ambiente", url), image_factory=factory, box_size=20)
         stream = BytesIO()
         img.save(stream)
         context["svg"] = stream.getvalue().decode()
-        print(url)
         return render(request, "qrcode.html", context=context)
+
+
+class ChecklistsAmbienteView(View):
+    def get(self,request,ambiente_id):
+
+        ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
+        tipo = ambiente.tipo_ambiente.id
+        tipo_ambiente = emd.TipoAmbiente.objects.get(pk=tipo)
+        checklists = tipo_ambiente.checklists_relacionados
+        context = {
+            'ambiente' : ambiente,
+            'tipo_ambiente' : tipo_ambiente,
+            'checklists' : checklists
+        }
+        return render(request, "checklist.html", context=context)
