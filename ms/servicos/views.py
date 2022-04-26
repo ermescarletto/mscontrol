@@ -9,31 +9,26 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 import entidades.models as emd
 import qrcode
 import qrcode.image.svg
+from .forms import *
 from io import BytesIO
 
 
 class IndexView(View):
     def get(self,request):
-
         ambientes = emd.Ambiente.objects.all()
         soma_ambientes = 0
-
         if request.user.is_authenticated:
             for i in ambientes:
                 soma_ambientes += 1
             context = {
                 'nome' : 'MS Control',
                 'total_ambientes' : soma_ambientes,
-
             }
-
-
             return render(request, "dashboard.html", context=context)
         else:
             context = {
                 'nome': 'Deslogou',
             }
-
             return render(request, "index.html", context=context)
 
 
@@ -157,7 +152,7 @@ class ChecklistFormView(View):
 
 class QrCodeView(View):
     def get(self,request,ambiente_id):
-        base = 'http://localhost:8000'
+        base = 'http://35.199.80.80:8000/'
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
         url = base + '/control/check/{}/'.format(ambiente_id)
         context = {'urls' : url, 'ambientes' : ambiente}
@@ -194,5 +189,8 @@ class FormChecklistView(View):
         return render(request, "form_checklist.html", context=context)
 
     def post(self, request, ambiente_id, checklist_id):
+        form = ChecklistForm(request)
+        form.checklist = checklist_id
+        form.ambiente = ambiente_id
 
-
+        return render(request, "checklist.html", form=form)
