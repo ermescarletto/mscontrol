@@ -152,7 +152,7 @@ class ChecklistFormView(View):
 
 class QrCodeView(View):
     def get(self,request,ambiente_id):
-        base = 'http://35.199.80.80:8000/'
+        base = 'http://35.199.80.80:8000'
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
         url = base + '/control/check/{}/'.format(ambiente_id)
         context = {'urls' : url, 'ambientes' : ambiente}
