@@ -90,8 +90,6 @@ class ChecklistView(APIView):
     users. GET request returns the registered users whereas
     a POST request allows to create a new user.
     """
-
-
     def get(self,  checklist_id, ambiente_id, format=None):
         checklist = CadastroChecklist.objects.all(pk=checklist_id)
         serializer = CadastroChecklistSerializer(checklist, many=True)
@@ -115,6 +113,28 @@ class ChecklistView(APIView):
         )
 
 
+class APIChecklistPreenchido(APIView):
+    """
+    API View to create or get a lqrcodeist of all the registered
+    users. GET request returns the registered users whereas
+    a POST request allows to create a new user.
+    """
+    def post(self, request):
+        serializer = CadastroChecklistSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=ValueError):
+            serializer.create(validated_data=request.data)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            {
+                "error": True,
+                "error_msg": serializer.error_messages,
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
 class LoginView(View):
     template_name = 'login.html'
     def get(self, request, *args, **kwargs):
@@ -137,7 +157,7 @@ class ChecklistFormView(View):
 
 class QrCodeView(View):
     def get(self,request,ambiente_id):
-        base = 'http://192.168.3.34:8000'
+        base = 'http://localhost:8000'
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
         url = base + '/control/check/{}/'.format(ambiente_id)
         context = {'urls' : url, 'ambientes' : ambiente}
@@ -151,7 +171,6 @@ class QrCodeView(View):
 
 class ChecklistsAmbienteView(View):
     def get(self,request,ambiente_id):
-
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
         tipo = ambiente.tipo_ambiente.id
         tipo_ambiente = emd.TipoAmbiente.objects.get(pk=tipo)
@@ -162,3 +181,18 @@ class ChecklistsAmbienteView(View):
             'checklists' : checklists
         }
         return render(request, "checklist.html", context=context)
+
+class FormChecklistView(View):
+    def get(self, request, ambiente_id, checklist_id):
+        ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
+        checklist = CadastroChecklist.objects.get(pk=checklist_id)
+
+        context = {
+            'ambiente': ambiente,
+            'checklist': checklist
+        }
+        return render(request, "form_checklist.html", context=context)
+
+    def post(self, request, ambiente_id, checklist_id):
+
+
