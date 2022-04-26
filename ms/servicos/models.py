@@ -80,8 +80,7 @@ class Checklist(models.Model):
 
 class ChecklistPreenchido(models.Model):
     ambiente = models.ForeignKey('entidades.Ambiente',on_delete=models.PROTECT)
-    servico = models.ForeignKey(Servico,on_delete=models.PROTECT)
-    checklist = models.ForeignKey(Checklist,on_delete=models.PROTECT)
+    checklist = models.ForeignKey(CadastroChecklist,on_delete=models.PROTECT)
     itens = models.JSONField()
     foto_checklist_depois = models.ImageField()
 

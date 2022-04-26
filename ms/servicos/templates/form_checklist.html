@@ -23,7 +23,7 @@
       <h6 class="text-center">{{ checklist.descricao }}</h6>
       <br>
     <div class="form-group">
-              <form action="/control/check/form/{{ambiente.id}}/{{checklist.id}}/" method="post">
+              <form action="/control/check/form/{{ambiente.id}}/{{checklist.id}}/" method="post" enctype="multipart/form-data" >
                     {% csrf_token %}
 
 
@@ -31,7 +31,7 @@
                   <div class="col-sm">
               <ul>
                   {% for i in checklist.itens.all %}
-                    <li> <input type="checkbox" class="check" id="item-check-{{i.id}}"> {{i}} </li>
+                    <li> <input type="checkbox" name="itens" value="{{i.descricao}}" class="check" id="item-check-{{i.id}}"> {{i}} </li>
                   <br>
                   {% endfor %}
               </ul>
@@ -41,7 +41,7 @@
 
           <div class="row text-center small">
               <div class="col-sm">
-                <input class="btn btn-secondary" type="file" id= "cap2" name="personalPhoto" accept="image/*" capture ="camera" id="camera2">
+                <input class="btn btn-secondary" type="file" id= "cap2" name="fotoAmbiente" accept="image/*" capture ="camera" id="camera2">
               </div>
           </div>
     <br>
