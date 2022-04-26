@@ -1,14 +1,12 @@
 from django import forms
-
+from .models import *
 
 
 class ChecklistForm(forms.Form):
-    inicio_checklist = forms.DateTimeField()
     ambiente = forms.IntegerField()
-    servico = forms.IntegerField()
     checklist = forms.IntegerField()
-    item = forms.IntegerField()
-    valor_item = forms.BooleanField()
+    itens = forms.JSONField()
     imagem = forms.ImageField()
-    fim_checklist = forms.DateTimeField()
 
+    class Meta:
+        model = ChecklistPreenchido
