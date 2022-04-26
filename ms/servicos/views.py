@@ -9,6 +9,8 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 import entidades.models as emd
 import qrcode
 import qrcode.image.svg
+import json
+from PIL import Image
 from .forms import *
 from io import BytesIO
 
@@ -189,8 +191,23 @@ class FormChecklistView(View):
         return render(request, "form_checklist.html", context=context)
 
     def post(self, request, ambiente_id, checklist_id):
-        form = ChecklistForm(request)
-        form.checklist = checklist_id
-        form.ambiente = ambiente_id
+        check = ChecklistPreenchido()
+        check.ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
+        check.checklist = CadastroChecklist.objects.get(pk=checklist_id)
+        itens_array = json.dumps(request.POST.getlist('itens'))
+        check.itens = itens_array
+        check.foto_checklist_depois = request.FILES['fotoAmbiente']
+        print(itens_array)
+        check.save()
 
-        return render(request, "checklist.html", form=form)
+        return render(request, "dashboard.html")
+
+
+
+class ChecklistsView(View):
+    def get(self,request):
+        checklists = ChecklistPreenchido.objects.all()
+        context = {
+            'checklists': checklists
+        }
+        return render(request, "lista_checklists.html", context=context)
