@@ -193,4 +193,4 @@ class FormChecklistView(View):
         form.checklist = checklist_id
         form.ambiente = ambiente_id
 
-        return render(request, "checklist.html")
+        return render(request, "checklist.html", form=form)
