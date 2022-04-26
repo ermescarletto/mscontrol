@@ -12,5 +12,7 @@ urlpatterns = [
     path('ambientes/',AmbientesView.as_view(), name='ambientes'),
     path('entidades/',EntidadesView.as_view(), name='entidades'),
     path('entidades/<pk>/delete/',EntidadeDelete.as_view(), name='deleta_entidade'),
-    path('servicos/',ServicosView.as_view(), name='servicos')
+    path('servicos/',ServicosView.as_view(), name='servicos'),
+    path('api/check/', APIChecklistPreenchido.as_view(), name='checklist_preenchido'),
+    path('check/form/<int:ambiente_id>/<int:checklist_id>/',FormChecklistView.as_view(),name='form_checklist')
 ]

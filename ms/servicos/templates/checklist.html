@@ -21,7 +21,7 @@
             {% for i in checklists.all %}
             <tr>
                 <td>
-                <a href="#">{{i}}</a>
+                <a href="{% url 'control:form_checklist' ambiente.id i.id %}">{{i}}</a>
             </td></tr>
             {% endfor %}
       </tbody>
