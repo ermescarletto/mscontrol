@@ -197,7 +197,6 @@ class FormChecklistView(View):
         itens_array = json.dumps(request.POST.getlist('itens'))
         check.itens = itens_array
         check.foto_checklist_depois = request.FILES['fotoAmbiente']
-        print(itens_array)
         check.save()
 
         return render(request, "dashboard.html")

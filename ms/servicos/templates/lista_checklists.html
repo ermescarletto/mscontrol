@@ -6,7 +6,7 @@
 
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Ambientes</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Checklists Preenchidos</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -25,7 +25,7 @@
                                             <td> {{ i.ambiente.descricao }}</td>
                                             <td> {{ i.checklist.descricao }}</td>
                                             <td> {{ i.itens }}</td>
-                                            <td> <img src="{{ i.foto_checklist_depois.url }}" alt=""> </td>
+                                            <td> <img src="{{ i.foto_checklist_depois.url }}" height="150px" width="150px" alt=""> </td>
 
                                         </tr>
                                     {% endfor %}
