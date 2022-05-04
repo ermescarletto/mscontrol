@@ -16,7 +16,6 @@ class TipoServico(models.Model):
     unidade = models.CharField(choices=UNIDADES,max_length=2)
     risco = models.CharField(choices=RISCO,max_length=1)
     observacao = models.TextField()
-    tipo_ambiente = models.ManyToManyField('entidades.TipoAmbiente')
 
     def __str__(self):
         return self.descricao
