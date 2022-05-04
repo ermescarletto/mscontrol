@@ -12,14 +12,6 @@ class CadastroItemChecklistSerializer(serializers.ModelSerializer):
         model = CadastroItemChecklist
 
 
-class ChecklistSerializer(serializers.ModelSerializer):
-
-    def create(self, validated_data):
-        checklist = Checklist.objects.save(**validated_data)
-        return checklist
-    class Meta:
-        model = Checklist
-
 
 class CadastroChecklistSerializer(serializers.ModelSerializer):
     itens = serializers.StringRelatedField(many=True)
