@@ -58,7 +58,7 @@ class ChecklistPreenchido(models.Model):
     ambiente = models.ForeignKey('entidades.Ambiente',on_delete=models.PROTECT)
     checklist = models.ForeignKey(CadastroChecklist,on_delete=models.PROTECT)
     itens = models.JSONField()
-    foto_checklist_depois = models.ImageField()
+    foto_checklist_depois = models.ImageField(blank=True)
     data_hora = models.DateTimeField(auto_now=True, auto_created=True)
 
     def __str__(self):
