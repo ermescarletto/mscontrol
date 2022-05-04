@@ -17,6 +17,7 @@
                                             <th>Checklist</th>
                                             <th>Itens Realizados</th>
                                             <th>Imagem</th>
+                                            <th>Data</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -26,6 +27,7 @@
                                             <td> {{ i.checklist.descricao }}</td>
                                             <td> {{ i.itens }}</td>
                                             <td> <img src="{{ i.foto_checklist_depois.url }}" height="150px" width="150px" alt=""> </td>
+                                            <td> {{ i.data_hora }}</td>
 
                                         </tr>
                                     {% endfor %}

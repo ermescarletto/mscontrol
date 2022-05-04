@@ -26,5 +26,4 @@ admin.site.register(TipoServico,ListaTipoServico)
 admin.site.register(Servico)
 admin.site.register(CadastroItemChecklist)
 admin.site.register(CadastroChecklist,ListaCadastroChecklist)
-admin.site.register(Checklist)
-
+admin.site.register(ChecklistPreenchido)

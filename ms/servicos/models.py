@@ -53,29 +53,6 @@ class CadastroChecklist(models.Model):
         return self.descricao
 
 
-class Checklist(models.Model):
-    inicio_checklist = models.DateTimeField()
-    ambiente = models.ForeignKey('entidades.Ambiente',on_delete=models.PROTECT)
-    servico = models.ForeignKey(Servico,on_delete=models.PROTECT)
-    checklist = models.ForeignKey(CadastroChecklist,on_delete=models.PROTECT)
-    item = models.ForeignKey(CadastroItemChecklist, on_delete=models.PROTECT)
-    valor_item = models.BooleanField(blank=True)
-    imagem = models.ImageField(blank=True)
-    fim_checklist = models.DateTimeField()
-
-    def item_value(self):
-        descricao_item = ''
-        if self.valor_item:
-            descricao_item = 'REALIZADO'
-        else:
-            descricao_item = 'NÃO REALIZADO'
-
-        return descricao_item
-
-
-    def __str__(self):
-        return 'Checklist: {} Item: {} Valor: {} Ambiente: {} Servico: {}'.format(self.id,self.item,self.item_value(),self.ambiente,self.servico)
-
 
 
 class ChecklistPreenchido(models.Model):
@@ -83,6 +60,7 @@ class ChecklistPreenchido(models.Model):
     checklist = models.ForeignKey(CadastroChecklist,on_delete=models.PROTECT)
     itens = models.JSONField()
     foto_checklist_depois = models.ImageField()
+    data_hora = models.DateTimeField(auto_now=True, auto_created=True)
 
     def __str__(self):
         return 'Checklist: {}'.format(str(self.checklist))
