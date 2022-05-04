@@ -4,16 +4,16 @@ from .models import *
 
 
 class ListaTipoServico(admin.ModelAdmin):
-    list_display = ('id', 'descricao','ambientes')
+    list_display = ('id', 'descricao')
     list_display_links = ('descricao',)
 
 
-    def ambientes(self, obj):
-        text = ''
-        tipos = obj.tipo_ambiente.all()
-        for i in tipos:
-            text = text + i.descricao + "\n"
-        return text
+#    def ambientes(self, obj):
+#        text = ''
+#        tipos = obj.tipo_ambiente.all()
+#        for i in tipos:
+#            text = text + i.descricao + "\n"
+#        return text
 
 class ListaCadastroChecklist(admin.ModelAdmin):
 
