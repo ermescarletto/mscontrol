@@ -6,8 +6,7 @@ from .models import *
 class ListaTipoServico(admin.ModelAdmin):
     list_display = ('id', 'descricao','ambientes')
     list_display_links = ('descricao',)
-    filter_horizontal = ('tipo_ambiente',)
-    list_filter = ('tipo_ambiente',)
+
 
     def ambientes(self, obj):
         text = ''
