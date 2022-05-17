@@ -23,7 +23,13 @@
     <div class="form-group">
               <form action="/control/check/form/{{ambiente.id}}/{{checklist.id}}/" method="post" enctype="multipart/form-data" >
                     {% csrf_token %}
-
+                              <br>
+              <div class="row text-center small">
+                  <div class="col-sm small">
+                    <input class="form-control form-control-sm" type="file" id= "cap1" name="fotoAmbienteAntes" accept="image/*" capture="camera" id="camera1">
+                  </div>
+              </div>
+                      <br>
 
               <div class="row text-center small">
                   <div class="col-sm form-check">

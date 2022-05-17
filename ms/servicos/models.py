@@ -56,10 +56,11 @@ class CadastroChecklist(models.Model):
 
 
 class ChecklistPreenchido(models.Model):
+    foto_checklist_antes = models.ImageField(blank=True)
     ambiente = models.ForeignKey('entidades.Ambiente',on_delete=models.PROTECT)
     checklist = models.ForeignKey(CadastroChecklist,on_delete=models.PROTECT)
     itens = models.JSONField()
-    foto_checklist_depois = models.ImageField()
+    foto_checklist_depois = models.ImageField(blank=True)
     data_hora = models.DateTimeField(auto_now=True, auto_created=True)
 
     def __str__(self):
