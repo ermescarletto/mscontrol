@@ -195,7 +195,7 @@ class FormChecklistView(View):
         check.ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
         check.checklist = CadastroChecklist.objects.get(pk=checklist_id)
         check.foto_checklist_antes = request.FILES['fotoAmbienteAntes']
-        itens_array = json.dumps(request.POST.getlist('itens')).encode('utf-8')
+        itens_array = json.dumps(request.POST.getlist('itens'))
         check.itens = itens_array
         check.foto_checklist_depois = request.FILES['fotoAmbiente']
         check.save()
