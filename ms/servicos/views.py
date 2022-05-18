@@ -62,29 +62,18 @@ class AmbientesView(View):
 class ServicosView(View):
     def get(self,request):
         servicos = TipoServico.objects.all()
-
-
         context = {
             'servicos' : servicos,
-
-
         }
-
         return render(request, "servicos.html", context=context)
 
 
 class ChecklistView(APIView):
-    """
-    API View to create or get a lqrcodeist of all the registered
-    users. GET request returns the registered users whereas
-    a POST request allows to create a new user.
-    """
     def get(self,  checklist_id, ambiente_id, format=None):
         checklist = CadastroChecklist.objects.all(pk=checklist_id)
         serializer = CadastroChecklistSerializer(checklist, many=True)
         serializer.add(ambiente_id)
         return Response(serializer.data)
-
     def post(self, request):
         serializer = CadastroChecklistSerializer(data=request.data)
         if serializer.is_valid(raise_exception=ValueError):
@@ -101,13 +90,7 @@ class ChecklistView(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-
 class APIChecklistPreenchido(APIView):
-    """
-    API View to create or get a lqrcodeist of all the registered
-    users. GET request returns the registered users whereas
-    a POST request allows to create a new user.
-    """
     def post(self, request):
         serializer = CadastroChecklistSerializer(data=request.data)
         if serializer.is_valid(raise_exception=ValueError):
@@ -127,9 +110,7 @@ class APIChecklistPreenchido(APIView):
 class LoginView(View):
     template_name = 'login.html'
     def get(self, request, *args, **kwargs):
-
         return render(request, self.template_name)
-
 
 class DashboardView(LoginRequiredMixin,View):
     template_name = 'dashboard.html'
@@ -138,14 +119,36 @@ class DashboardView(LoginRequiredMixin,View):
     def get(self,request):
 
         ambientes = emd.Ambiente.objects.all()
+        checklists_sem_imagens = ChecklistPreenchido.objects.filter(foto_checklist_antes=False, foto_checklist_depois=False )
+        cadastros_checklists = CadastroChecklist.objects.all()
+        conforme = 0
+        inconforme = 0
+        percentual = 0
+        for i in cadastros_checklists:
+            itens_check = i.itens.all()
+            itens = len(itens_check)
+
+            check_preenchido = ChecklistPreenchido.objects.filter(checklist=i)
+            for c in check_preenchido:
+                a = json.loads(str(c.itens))
+                if itens == len(a):
+                    conforme+=1
+                else:
+                    inconforme+=1
+        percentual = conforme/(conforme+inconforme)*100
         soma_ambientes = 0
+        soma_checklists = 0
         for i in ambientes:
             soma_ambientes += 1
-            context = {
+        for i in checklists_sem_imagens:
+            soma_checklists += 1
+        context = {
             'nome': 'MS Control',
             'total_ambientes': soma_ambientes,
+            'total_checklists_sem_imagem' : soma_checklists,
+            'percentual_conformidade' : percentual,
             }
-            return render(request, self.template_name, context=context)
+        return render(request, self.template_name, context=context)
 
 
 class ChecklistFormView(View):
@@ -182,7 +185,7 @@ class ChecklistsAmbienteView(View):
         return render(request, "checklist.html", context=context)
 
 class FormChecklistView(LoginRequiredMixin, View):
-
+    template_name = "form_checklist.html"
     login_url = '/user/login/'
 
 
@@ -194,7 +197,7 @@ class FormChecklistView(LoginRequiredMixin, View):
             'ambiente': ambiente,
             'checklist': checklist
         }
-        return render(request, "form_checklist.html", context=context)
+        return render(request, self.template_name, context=context)
 
     def post(self, request, ambiente_id, checklist_id):
         check = ChecklistPreenchido()
@@ -207,8 +210,6 @@ class FormChecklistView(LoginRequiredMixin, View):
         check.save()
 
         return render(request, "checklist_ok.html")
-
-
 
 class ChecklistsView(View):
     def get(self,request):

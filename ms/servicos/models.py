@@ -33,10 +33,6 @@ class Servico(models.Model):
 
 
 class CadastroItemChecklist(models.Model):
-    OPTIONS = [
-        ('BOO','BOOLEAN'),
-    ]
-    tipo_item = models.CharField(max_length=3,choices=OPTIONS)
     descricao = models.CharField(max_length=255)
     obrigatorio = models.BooleanField()
     publicado = models.BooleanField()
