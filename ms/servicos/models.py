@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 class TipoServico(models.Model):
     UNIDADES = [
         ('UN', 'UNIDADE'),
@@ -57,7 +57,7 @@ class ChecklistPreenchido(models.Model):
     itens = models.JSONField()
     foto_checklist_depois = models.ImageField(blank=True)
     data_hora = models.DateTimeField(auto_now=True, auto_created=True)
-
+    usuario = models.ForeignKey(User,on_delete=models.PROTECT)
     def __str__(self):
         return 'Checklist: {}'.format(str(self.checklist))
 

@@ -124,17 +124,25 @@ class DashboardView(LoginRequiredMixin,View):
         conforme = 0
         inconforme = 0
         percentual = 0
+        id_inconformes = []
         for i in cadastros_checklists:
             itens_check = i.itens.all()
             itens = len(itens_check)
-
             check_preenchido = ChecklistPreenchido.objects.filter(checklist=i)
             for c in check_preenchido:
                 a = json.loads(str(c.itens))
                 if itens == len(a):
                     conforme+=1
                 else:
+                    id_inconformes.append(c.id)
                     inconforme+=1
+        ### AQUI MALUCO. TU JÁ CONSEGUE VER OS SERVIÇOS QUE NÃO FORAM PREENCHIDOS
+        ### CONTINUA ESSA MERDA E FUMA MENOS
+        ### VAI DAR BOA IRMÃO
+        ### FÉ NO PIÁ
+
+
+        print(id_inconformes)
         percentual = conforme/(conforme+inconforme)*100
         soma_ambientes = 0
         soma_checklists = 0
@@ -147,6 +155,7 @@ class DashboardView(LoginRequiredMixin,View):
             'total_ambientes': soma_ambientes,
             'total_checklists_sem_imagem' : soma_checklists,
             'percentual_conformidade' : percentual,
+            'nao_conforme': inconforme,
             }
         return render(request, self.template_name, context=context)
 
