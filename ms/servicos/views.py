@@ -211,6 +211,7 @@ class FormChecklistView(LoginRequiredMixin, View):
         itens_array = json.dumps(request.POST.getlist('itens'))
         check.itens = itens_array
         check.foto_checklist_depois = request.FILES['fotoAmbiente'] if 'fotoAmbiente' in request.FILES else False
+        check.usuario = request.user
         check.save()
 
         return render(request, "checklist_ok.html")
