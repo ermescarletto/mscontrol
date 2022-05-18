@@ -83,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mscontrol',
-        'USER': 'carletto',
-        'PASSWORD': 'ecju2403=',
+        'USER': 'postgres',
+        'PASSWORD': 'D4Aud5AofsxR',
         'HOST': 'localhost',
         'PORT' : '5432',
     }
