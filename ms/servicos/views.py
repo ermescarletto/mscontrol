@@ -136,11 +136,6 @@ class DashboardView(LoginRequiredMixin,View):
                 else:
                     id_inconformes.append(c.id)
                     inconforme+=1
-        ### AQUI MALUCO. TU JÁ CONSEGUE VER OS SERVIÇOS QUE NÃO FORAM PREENCHIDOS
-        ### CONTINUA ESSA MERDA E FUMA MENOS
-        ### VAI DAR BOA IRMÃO
-        ### FÉ NO PIÁ
-
 
         print(id_inconformes)
         percentual = conforme/(conforme+inconforme)*100
