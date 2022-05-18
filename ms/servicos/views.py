@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View, generic
 from .serializers import CadastroChecklistSerializer
 from rest_framework.views import APIView
@@ -10,6 +11,7 @@ import entidades.models as emd
 import qrcode
 import qrcode.image.svg
 import json
+
 from PIL import Image
 from .forms import *
 from io import BytesIO
@@ -17,24 +19,14 @@ from io import BytesIO
 
 class IndexView(View):
     def get(self,request):
-        ambientes = emd.Ambiente.objects.all()
-        soma_ambientes = 0
-        if request.user.is_authenticated:
-            for i in ambientes:
-                soma_ambientes += 1
-            context = {
-                'nome' : 'MS Control',
-                'total_ambientes' : soma_ambientes,
-            }
-            return render(request, "dashboard.html", context=context)
-        else:
-            context = {
-                'nome': 'Deslogou',
-            }
-            return render(request, "index.html", context=context)
+        context = {
+            'nome': 'MS Control',
+        }
+        return render(request, "index.html", context=context)
 
 
 class EntidadesView(View):
+
     def get(self,request):
         entidades = emd.Entidade.objects.all()
         context = {
@@ -139,11 +131,21 @@ class LoginView(View):
         return render(request, self.template_name)
 
 
-class DashboardView(View):
+class DashboardView(LoginRequiredMixin,View):
     template_name = 'dashboard.html'
-    def get(self, request, *args, **kwargs):
-        checklists = Checklist.objects.all()
-        return render(request, self.template_name, context={'checklists' : checklists})
+    login_url = '/user/login/'
+
+    def get(self,request):
+
+        ambientes = emd.Ambiente.objects.all()
+        soma_ambientes = 0
+        for i in ambientes:
+            soma_ambientes += 1
+            context = {
+            'nome': 'MS Control',
+            'total_ambientes': soma_ambientes,
+            }
+            return render(request, self.template_name, context=context)
 
 
 class ChecklistFormView(View):
@@ -179,7 +181,11 @@ class ChecklistsAmbienteView(View):
         }
         return render(request, "checklist.html", context=context)
 
-class FormChecklistView(View):
+class FormChecklistView(LoginRequiredMixin, View):
+
+    login_url = '/user/login/'
+
+
     def get(self, request, ambiente_id, checklist_id):
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
         checklist = CadastroChecklist.objects.get(pk=checklist_id)
@@ -194,13 +200,13 @@ class FormChecklistView(View):
         check = ChecklistPreenchido()
         check.ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
         check.checklist = CadastroChecklist.objects.get(pk=checklist_id)
-        check.foto_checklist_antes = request.FILES['fotoAmbienteAntes']
+        check.foto_checklist_antes = request.FILES['fotoAmbienteAntes'] if 'fotoAmbienteAntes' in request.FILES else False
         itens_array = json.dumps(request.POST.getlist('itens'))
         check.itens = itens_array
-        check.foto_checklist_depois = request.FILES['fotoAmbiente']
+        check.foto_checklist_depois = request.FILES['fotoAmbiente'] if 'fotoAmbiente' in request.FILES else False
         check.save()
 
-        return render(request, "dashboard.html")
+        return render(request, "checklist_ok.html")
 
 
 
