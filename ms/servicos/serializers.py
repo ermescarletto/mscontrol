@@ -25,6 +25,7 @@ class CadastroChecklistSerializer(serializers.ModelSerializer):
     class Meta:
         model = CadastroChecklist
         fields = (
+            'id',
             'descricao',
             'tipo_servico',
             'itens',

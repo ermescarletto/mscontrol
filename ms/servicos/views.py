@@ -69,11 +69,13 @@ class ServicosView(View):
 
 
 class ChecklistView(APIView):
-    def get(self,  checklist_id, ambiente_id, format=None):
-        checklist = CadastroChecklist.objects.all(pk=checklist_id)
+    def get(self, request,  ambiente_id, checklist_id):
+        checklist = CadastroChecklist.objects.filter(pk=checklist_id)
         serializer = CadastroChecklistSerializer(checklist, many=True)
-        serializer.add(ambiente_id)
+
+
         return Response(serializer.data)
+
     def post(self, request):
         serializer = CadastroChecklistSerializer(data=request.data)
         if serializer.is_valid(raise_exception=ValueError):
