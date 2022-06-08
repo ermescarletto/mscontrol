@@ -11,10 +11,11 @@ import entidades.models as emd
 import qrcode
 import qrcode.image.svg
 import json
-
+import hashlib
 from PIL import Image
 from .forms import *
 from io import BytesIO
+
 
 
 class IndexView(View):
@@ -173,12 +174,13 @@ class QrCodeView(View):
     def get(self,request,ambiente_id):
 
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
-        url = '/{}/'.format(ambiente_id)
+        url = '{}'.format(ambiente_id)
         context = {'urls' : url, 'ambientes' : ambiente}
         factory = qrcode.image.svg.SvgImage
         img = qrcode.make(request.POST.get("Ambiente", url), image_factory=factory, box_size=20)
         stream = BytesIO()
         img.save(stream)
+
         context["svg"] = stream.getvalue().decode()
         return render(request, "qrcode.html", context=context)
 
