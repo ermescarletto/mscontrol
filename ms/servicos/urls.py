@@ -14,7 +14,8 @@ urlpatterns = [
     path('entidades/<pk>/delete/',EntidadeDelete.as_view(), name='deleta_entidade'),
     path('servicos/',ServicosView.as_view(), name='servicos'),
     path('api/check/', APIChecklistPreenchido.as_view(), name='checklist_preenchido'),
-    path('api/check/<int:ambiente_id>/<int:checklist_id>/', ChecklistView.as_view(), name='checklist_preenchido'),
+    #path('api/check/<int:ambiente_id>/<int:checklist_id>/', ChecklistView.as_view(), name='checklist_preenchido'),
+    path('api/check/<int:ambiente_id>/', APIAmbientesChecklists.as_view(), name='checklist_preenchido'),
     path('check/form/<int:ambiente_id>/<int:checklist_id>/',FormChecklistView.as_view(),name='form_checklist'),
     path('checklists/', ChecklistsView.as_view(),name='checklists')
 ]
