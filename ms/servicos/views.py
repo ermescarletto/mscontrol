@@ -68,12 +68,17 @@ class ServicosView(View):
         return render(request, "servicos.html", context=context)
 
 
+class APIAmbientesChecklists(APIView):
+    def get(self, request,  ambiente_id):
+        ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
+        serializer = CadastroChecklistSerializer(ambiente.tipo_ambiente.checklists_relacionados, many=True)
+        return Response(serializer.data)
+
+
 class ChecklistView(APIView):
     def get(self, request,  ambiente_id, checklist_id):
         checklist = CadastroChecklist.objects.filter(pk=checklist_id)
         serializer = CadastroChecklistSerializer(checklist, many=True)
-
-
         return Response(serializer.data)
 
     def post(self, request):
@@ -163,11 +168,12 @@ class ChecklistFormView(View):
         checklist = get_object_or_404(CadastroChecklist, pk=checklist_id)
         return render(request, self.template_name, context={'checklists' : checklist})
 
+
 class QrCodeView(View):
     def get(self,request,ambiente_id):
-        base = 'http://35.199.80.80:8000'
+
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
-        url = base + '/control/check/{}/'.format(ambiente_id)
+        url = '/{}/'.format(ambiente_id)
         context = {'urls' : url, 'ambientes' : ambiente}
         factory = qrcode.image.svg.SvgImage
         img = qrcode.make(request.POST.get("Ambiente", url), image_factory=factory, box_size=20)
