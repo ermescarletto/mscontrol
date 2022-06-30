@@ -51,7 +51,6 @@ class CadastroChecklist(models.Model):
 
 
 class ChecklistPreenchido(models.Model):
-    foto_checklist_antes = models.ImageField(blank=True)
     ambiente = models.ForeignKey('entidades.Ambiente',on_delete=models.PROTECT)
     checklist = models.ForeignKey(CadastroChecklist,on_delete=models.PROTECT)
     itens = models.JSONField()
