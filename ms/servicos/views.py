@@ -4,6 +4,8 @@ from .serializers import CadastroChecklistSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+from django.core.paginator import Paginator
 from rest_framework.permissions import IsAdminUser
 from .models import *
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
@@ -11,10 +13,11 @@ import entidades.models as emd
 import qrcode
 import qrcode.image.svg
 import json
-
+import hashlib
 from PIL import Image
 from .forms import *
 from io import BytesIO
+
 
 
 class IndexView(View):
@@ -39,11 +42,6 @@ class EntidadeDelete(generic.DeleteView):
     model = emd.Entidade
     success_url = "/"
     template_name = "ambientes.html"
-
-
-
-
-
 
 class AmbientesView(View):
     def get(self,request):
@@ -126,7 +124,7 @@ class DashboardView(LoginRequiredMixin,View):
     def get(self,request):
 
         ambientes = emd.Ambiente.objects.all()
-        checklists_sem_imagens = ChecklistPreenchido.objects.filter(foto_checklist_antes=False, foto_checklist_depois=False )
+        checklists_sem_imagens = ChecklistPreenchido.objects.filter(foto_checklist_depois=False )
         cadastros_checklists = CadastroChecklist.objects.all()
         conforme = 0
         inconforme = 0
@@ -144,7 +142,6 @@ class DashboardView(LoginRequiredMixin,View):
                     id_inconformes.append(c.id)
                     inconforme+=1
 
-        print(id_inconformes)
         percentual = conforme/(conforme+inconforme)*100
         soma_ambientes = 0
         soma_checklists = 0
@@ -157,12 +154,13 @@ class DashboardView(LoginRequiredMixin,View):
             'total_ambientes': soma_ambientes,
             'total_checklists_sem_imagem' : soma_checklists,
             'percentual_conformidade' : percentual,
-            'nao_conforme': inconforme,
+            'nao_conforme': inconforme
             }
         return render(request, self.template_name, context=context)
 
 
 class ChecklistFormView(View):
+
     template_name = 'checklist.html'
     def get(self,request,checklist_id, *args, **kwargs):
         checklist = get_object_or_404(CadastroChecklist, pk=checklist_id)
@@ -173,12 +171,13 @@ class QrCodeView(View):
     def get(self,request,ambiente_id):
 
         ambiente = emd.Ambiente.objects.get(pk=ambiente_id)
-        url = '/{}/'.format(ambiente_id)
+        url = '{}'.format(ambiente_id)
         context = {'urls' : url, 'ambientes' : ambiente}
         factory = qrcode.image.svg.SvgImage
         img = qrcode.make(request.POST.get("Ambiente", url), image_factory=factory, box_size=20)
         stream = BytesIO()
         img.save(stream)
+
         context["svg"] = stream.getvalue().decode()
         return render(request, "qrcode.html", context=context)
 
@@ -225,9 +224,14 @@ class FormChecklistView(LoginRequiredMixin, View):
         return render(request, "checklist_ok.html")
 
 class ChecklistsView(View):
+
     def get(self,request):
-        checklists = ChecklistPreenchido.objects.order_by('-data_hora')[:5]
+        #checklists = ChecklistPreenchido.objects.order_by('-data_hora')[:5]
+        checklists = ChecklistPreenchido.objects.all()
+        paginator = Paginator(checklists,10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
         context = {
-            'checklists': checklists
+            'page_obj': page_obj
         }
         return render(request, "lista_checklists.html", context=context)

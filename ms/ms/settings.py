@@ -26,20 +26,20 @@ SECRET_KEY = '2x1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','35.199.80.80']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken',
     'cadastrounico',
     'entidades',
     'servicos',
@@ -144,9 +144,7 @@ REST_FRAMEWORK = {
 }
 
 
-STATICFILES_DIRS = [
-    (os.path.join(BASE_DIR, "static")),
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, '../media')
 MEDIA_URL = 'media/'

@@ -19,10 +19,14 @@ class ListaCadastroChecklist(admin.ModelAdmin):
 
     filter_horizontal = ('itens',)
 
+class ListaChecklistPreenchido(admin.ModelAdmin):
 
+    list_display = ('id','ambiente','checklist','data_hora','usuario')
+    list_display_links = ('id','ambiente',)
+    list_filter = ('ambiente','checklist','data_hora','usuario')
 
 admin.site.register(TipoServico,ListaTipoServico)
 admin.site.register(Servico)
 admin.site.register(CadastroItemChecklist)
 admin.site.register(CadastroChecklist,ListaCadastroChecklist)
-admin.site.register(ChecklistPreenchido)
+admin.site.register(ChecklistPreenchido,ListaChecklistPreenchido)

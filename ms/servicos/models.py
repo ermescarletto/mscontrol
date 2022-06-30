@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+
+
 class TipoServico(models.Model):
     UNIDADES = [
         ('UN', 'UNIDADE'),
@@ -51,7 +53,6 @@ class CadastroChecklist(models.Model):
 
 
 class ChecklistPreenchido(models.Model):
-    foto_checklist_antes = models.ImageField(blank=True)
     ambiente = models.ForeignKey('entidades.Ambiente',on_delete=models.PROTECT)
     checklist = models.ForeignKey(CadastroChecklist,on_delete=models.PROTECT)
     itens = models.JSONField()

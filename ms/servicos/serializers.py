@@ -31,8 +31,6 @@ class CadastroChecklistSerializer(serializers.ModelSerializer):
             'itens',
         )
 
-
-
 class ChecklistPreenchidoSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     ambiente = serializers.IntegerField()
