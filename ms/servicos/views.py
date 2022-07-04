@@ -1,10 +1,15 @@
+import base64
+import datetime
+import imghdr
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files.base import ContentFile
 from django.views import View, generic
-from .serializers import CadastroChecklistSerializer
+from .serializers import CadastroChecklistSerializer, APIChecklistPreenchidoSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-
+from rest_framework.parsers import MultiPartParser, JSONParser
+from rest_framework import status, viewsets
 from django.core.paginator import Paginator
 from rest_framework.permissions import IsAdminUser
 from .models import *
@@ -96,8 +101,29 @@ class ChecklistView(APIView):
         )
 
 class APIChecklistPreenchido(APIView):
+
     def post(self, request):
-        serializer = CadastroChecklistSerializer(data=request.data)
+        serializer = APIChecklistPreenchidoSerializer(data=request.data)
+        if request.data:
+            checklist = CadastroChecklist.objects.get(pk=request.data['checklist'])
+            ambiente  = emd.Ambiente.objects.get(pk=request.data['ambiente'])
+
+            nome_arquivo = "{}_{}_{}_{}".format(ambiente,checklist,request.user,datetime.datetime.now())
+            arquivo = ContentFile(base64.b64decode(request.data['foto_checklist_depois']),nome_arquivo + '.jpg')
+
+
+            request.data['checklist'] = checklist
+
+            request.data['ambiente'] = ambiente
+
+            request.data['usuario'] = request.user
+
+            request.data['itens'] = json.dumps(request.data['itens'])
+
+            request.data['foto_checklist_depois'] = arquivo
+
+
+
         if serializer.is_valid(raise_exception=ValueError):
             serializer.create(validated_data=request.data)
             return Response(
@@ -235,3 +261,8 @@ class ChecklistsView(View):
             'page_obj': page_obj
         }
         return render(request, "lista_checklists.html", context=context)
+
+
+class ChecklistViewset(APIView):
+    queryset = ChecklistPreenchido.objects.all()
+    serializer_class = ChecklistPreenchido

@@ -26,20 +26,20 @@ SECRET_KEY = '2x1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','35.199.80.80']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'rest_framework',
-    'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'cadastrounico',
     'entidades',
     'servicos',
@@ -83,8 +83,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mscontrol',
-        'USER': 'postgres',
-        'PASSWORD': 'D4Aud5AofsxR',
+        'USER': 'carletto',
+        'PASSWORD': 'ecju2403=',
         'HOST': 'localhost',
         'PORT' : '5432',
     }
@@ -144,7 +144,9 @@ REST_FRAMEWORK = {
 }
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    (os.path.join(BASE_DIR, "static")),
+]
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, '../media')
 MEDIA_URL = 'media/'
