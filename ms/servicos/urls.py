@@ -1,6 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from .views import *
+from rest_framework import routers
 from django.contrib.auth.decorators import login_required
+
+
+router = routers.DefaultRouter()
+router.register('api/save_checklist/',ChecklistViewset())
+
 
 app_name = 'api'
 
@@ -17,5 +23,8 @@ urlpatterns = [
     #path('api/check/<int:ambiente_id>/<int:checklist_id>/', ChecklistView.as_view(), name='checklist_preenchido'),
     path('api/check/<int:ambiente_id>/', APIAmbientesChecklists.as_view(), name='checklist_preenchido'),
     path('check/form/<int:ambiente_id>/<int:checklist_id>/',FormChecklistView.as_view(),name='form_checklist'),
-    path('checklists/', ChecklistsView.as_view(),name='checklists')
+    path('checklists/', ChecklistsView.as_view(),name='checklists'),
+    path('api/checklist/', ChecklistViewset.as_view(), name='api_check'),
+
+
 ]

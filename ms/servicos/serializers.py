@@ -1,7 +1,13 @@
+import imghdr
+
+import base64
+import six
+import uuid
 from .models import *
 from rest_framework import serializers
+from rest_framework.parsers import JSONParser, MultiPartParser
 from rest_framework.validators import UniqueTogetherValidator
-
+from django.core.files.base import ContentFile
 
 class CadastroItemChecklistSerializer(serializers.ModelSerializer):
 
@@ -31,23 +37,13 @@ class CadastroChecklistSerializer(serializers.ModelSerializer):
             'itens',
         )
 
-class ChecklistPreenchidoSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField()
-    ambiente = serializers.IntegerField()
-    servico = serializers.IntegerField()
-    checklist = serializers.IntegerField()
-    itens = serializers.JSONField()
 
-    def create(self, validated_data):
-        checklist = ChecklistPreenchido.objects.save(**validated_data)
-        return checklist
+class APIChecklistPreenchidoSerializer(serializers.ModelSerializer):
+    ambiente = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    checklist = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    usuario = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
 
 
     class Meta:
         model = ChecklistPreenchido
-        fields = (
-            'ambiente',
-            'servico',
-            'checklist',
-            'itens'
-        )
+        fields = '__all__'

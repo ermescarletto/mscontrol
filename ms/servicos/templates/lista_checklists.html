@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
                 <!-- Begin Page Content -->
@@ -26,7 +27,11 @@
                                             <td> {{ i.ambiente.descricao }}</td>
                                             <td> {{ i.checklist.descricao }}</td>
                                             <td> {{ i.itens }}</td>
+                                            {% if i.foto_checklist_depois %}
                                             <td> <img src="{{ i.foto_checklist_depois.url }}" height="150px" width="150px" alt=""> </td>
+                                            {% else %}
+                                            <td> <img src="{% static '/img/placeholder-img.png' %}" height="150px" width="150px" alt=""> </td>
+                                            {% endif %}
                                             <td> {{ i.data_hora }}</td>
 
                                         </tr>
