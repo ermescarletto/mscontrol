@@ -1,13 +1,7 @@
-import imghdr
 
-import base64
-import six
-import uuid
 from .models import *
 from rest_framework import serializers
-from rest_framework.parsers import JSONParser, MultiPartParser
-from rest_framework.validators import UniqueTogetherValidator
-from django.core.files.base import ContentFile
+
 
 class CadastroItemChecklistSerializer(serializers.ModelSerializer):
 
