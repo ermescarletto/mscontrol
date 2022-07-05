@@ -167,8 +167,8 @@ class DashboardView(LoginRequiredMixin,View):
                 else:
                     id_inconformes.append(c.id)
                     inconforme+=1
-
-        percentual = conforme/(conforme+inconforme)*100
+        if inconforme > 0:
+            percentual = conforme/(conforme+inconforme)*100
         soma_ambientes = 0
         soma_checklists = 0
         for i in ambientes:
