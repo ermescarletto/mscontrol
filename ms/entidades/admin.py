@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Entidade,Contrato,TipoAmbiente,Ambiente
+from .models import Entidade,Contrato,TipoAmbiente,Ambiente, Alas
 
 class ListaEntidades(admin.ModelAdmin):
     list_display = ('id', 'nome_razao')
@@ -17,6 +17,17 @@ class ListaContrato(admin.ModelAdmin):
 
     busca_entidade.short_description = 'Entidade'
     busca_entidade.admin_order_field = 'entidade__nome_razao'
+
+class ListaAla(admin.ModelAdmin):
+    list_display = ('id', 'nome', 'busca_entidade')
+    list_display_links = ('nome',)
+
+    def busca_entidade(self, obj):
+        return obj.entidade.nome_razao
+
+    busca_entidade.short_description = 'Entidade'
+    busca_entidade.admin_order_field = 'entidade__nome_razao'
+
 
 class ListaTipoAmbiente(admin.ModelAdmin):
     list_display = ('id','descricao','risco','controla_checklist')
@@ -46,3 +57,4 @@ admin.site.register(Entidade,ListaEntidades)
 admin.site.register(Contrato,ListaContrato)
 admin.site.register(TipoAmbiente,ListaTipoAmbiente)
 admin.site.register(Ambiente,ListaAmbiente)
+admin.site.register(Alas,ListaAla)

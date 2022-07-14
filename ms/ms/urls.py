@@ -37,5 +37,6 @@ urlpatterns = [
     path('api/', include('api.urls', namespace='api')),
     path('api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
     path('control/', include('servicos.urls', namespace='control')),
+    path('reports/', include('reports.urls', namespace='reports')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

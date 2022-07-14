@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container">
+
+    <div class="card-columns">
+         {% for i in page_obj %}
+
+        <div class=" card bg-warning" style="width: 18rem; color: #fff;">
+            {% if i.imagem %}
+            <img class="card-img-top" src="{{ i.imagem.url }}" alt="Card image cap">
+            {% else %}
+            <img class="card-img-top" src="{%  static '/img/placeholder.jpg' %}" alt="Card image cap">
+            {% endif %}
+            <div class="card-body">
+                <h4 class="card-title">{{i.descricao}}</h4>
+                <p class="card-text">"Status"</p>
+                <div class="flex-row  bd-highlight p-2">
+                    <!--- <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a> -->
+                    <a href="#" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
+                    <a href="#" class="btn btn-primary"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
+                    <a href="#" class="btn btn-primary"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                    <a href="#" class="btn btn-primary"><i class="fa fa-clock" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+     {% endfor %}
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Início</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+
+
+{% endblock %}
