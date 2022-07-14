@@ -15,6 +15,7 @@ from rest_framework.permissions import IsAdminUser
 from .models import *
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 import entidades.models as emd
+import entidades.serializers as ems
 import qrcode
 import qrcode.image.svg
 import json
@@ -48,7 +49,7 @@ class EntidadeDelete(generic.DeleteView):
     success_url = "/"
     template_name = "ambientes.html"
 
-class AmbientesView(View):
+class AmbientesViewOld(View):
     def get(self,request):
         ambientes = emd.Ambiente.objects.all()
         somaambientes = 0
@@ -101,29 +102,18 @@ class ChecklistView(APIView):
         )
 
 class APIChecklistPreenchido(APIView):
-
     def post(self, request):
         serializer = APIChecklistPreenchidoSerializer(data=request.data)
         if request.data:
             checklist = CadastroChecklist.objects.get(pk=request.data['checklist'])
             ambiente  = emd.Ambiente.objects.get(pk=request.data['ambiente'])
-
             nome_arquivo = "{}_{}_{}_{}".format(ambiente,checklist,request.user,datetime.datetime.now())
             arquivo = ContentFile(base64.b64decode(request.data['foto_checklist_depois']),nome_arquivo + '.jpg')
-
-
             request.data['checklist'] = checklist
-
             request.data['ambiente'] = ambiente
-
             request.data['usuario'] = request.user
-
             request.data['itens'] = json.dumps(request.data['itens'])
-
             request.data['foto_checklist_depois'] = arquivo
-
-
-
         if serializer.is_valid(raise_exception=ValueError):
             serializer.create(validated_data=request.data)
             return Response(
@@ -138,13 +128,37 @@ class APIChecklistPreenchido(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
+class APIStatusAmbiente(APIView):
+    def post(self, request):
+        serializer = ems.APIStatusAmbiente(data=request.data)
+        if request.data:
+            ambiente  = emd.Ambiente.objects.get(pk=request.data['ambiente'])
+            request.data['ambiente'] = ambiente
+            request.data['usuario'] = request.user
+        if serializer.is_valid(raise_exception=ValueError):
+            serializer.create(validated_data=request.data)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            {
+                "error": True,
+                "error_msg": serializer.error_messages,
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+
+
 class LoginView(View):
     template_name = 'login.html'
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name)
 
 class DashboardView(LoginRequiredMixin,View):
-    template_name = 'dashboard.html'
+    template_name = 'dashboard_ambientes.html'
     login_url = '/user/login/'
 
     def get(self,request):
@@ -167,7 +181,7 @@ class DashboardView(LoginRequiredMixin,View):
                 else:
                     id_inconformes.append(c.id)
                     inconforme+=1
-        if inconforme > 0:
+        if inconforme > 0 and conforme > 0:
             percentual = conforme/(conforme+inconforme)*100
         soma_ambientes = 0
         soma_checklists = 0
@@ -252,7 +266,6 @@ class FormChecklistView(LoginRequiredMixin, View):
 class ChecklistsView(View):
 
     def get(self,request):
-        #checklists = ChecklistPreenchido.objects.order_by('-data_hora')[:5]
         checklists = ChecklistPreenchido.objects.all()
         paginator = Paginator(checklists,10)
         page_number = request.GET.get('page')
@@ -261,6 +274,18 @@ class ChecklistsView(View):
             'page_obj': page_obj
         }
         return render(request, "lista_checklists.html", context=context)
+
+class AmbientesView(View):
+
+    def get(self,request):
+        checklists = emd.Ambiente.objects.all()
+        paginator = Paginator(checklists,10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            'page_obj': page_obj
+        }
+        return render(request, "lista_ambientes.html", context=context)
 
 
 class ChecklistViewset(APIView):

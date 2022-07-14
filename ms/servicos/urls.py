@@ -7,8 +7,7 @@ from django.contrib.auth.decorators import login_required
 router = routers.DefaultRouter()
 router.register('api/save_checklist/',ChecklistViewset())
 
-
-app_name = 'api'
+app_name = 'servicos'
 
 urlpatterns = [
     path('check/<int:ambiente_id>/', ChecklistsAmbienteView.as_view(),name='checklist_servico'),
@@ -20,11 +19,8 @@ urlpatterns = [
     path('entidades/<pk>/delete/',EntidadeDelete.as_view(), name='deleta_entidade'),
     path('servicos/',ServicosView.as_view(), name='servicos'),
     path('api/check/', APIChecklistPreenchido.as_view(), name='checklist_preenchido'),
-    #path('api/check/<int:ambiente_id>/<int:checklist_id>/', ChecklistView.as_view(), name='checklist_preenchido'),
-    path('api/check/<int:ambiente_id>/', APIAmbientesChecklists.as_view(), name='checklist_preenchido'),
-    path('check/form/<int:ambiente_id>/<int:checklist_id>/',FormChecklistView.as_view(),name='form_checklist'),
+    path('api/status/ambiente/', APIStatusAmbiente.as_view(), name='statis_ambiente'),
+    path('api/check/<int:ambiente_id>/', APIAmbientesChecklists.as_view(), name='checklists_ambientes'),
     path('checklists/', ChecklistsView.as_view(),name='checklists'),
     path('api/checklist/', ChecklistViewset.as_view(), name='api_check'),
-
-
 ]
