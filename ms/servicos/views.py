@@ -149,9 +149,6 @@ class APIStatusAmbiente(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-
-
-
 class LoginView(View):
     template_name = 'login.html'
     def get(self, request, *args, **kwargs):
@@ -266,7 +263,7 @@ class FormChecklistView(LoginRequiredMixin, View):
 class ChecklistsView(View):
 
     def get(self,request):
-        checklists = ChecklistPreenchido.objects.all()
+        checklists = ChecklistPreenchido.objects.all().order_by('-id')
         paginator = Paginator(checklists,10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -278,6 +275,7 @@ class ChecklistsView(View):
 class AmbientesView(View):
 
     def get(self,request):
+
         checklists = emd.Ambiente.objects.all()
         paginator = Paginator(checklists,10)
         page_number = request.GET.get('page')

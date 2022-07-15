@@ -89,8 +89,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'mscontrol',
-        'USER': 'postgres',
-        'PASSWORD': 'D4Aud5AofsxR',
+        #'USER': 'postgres',
+        'USER': 'carletto',
+        #'PASSWORD': 'D4Aud5AofsxR',
+        'PASSWORD': 'ecju2403=',
         'HOST': 'localhost',
         'PORT' : '5432',
     }
@@ -121,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC-3'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
