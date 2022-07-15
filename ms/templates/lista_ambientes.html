@@ -7,21 +7,19 @@
     <div class="card-columns">
          {% for i in page_obj %}
 
-        <div class=" card bg-warning" style="width: 18rem; color: #fff;">
+        <div class=" card bg-warning" style="width: 9rem; color: #fff;">
             {% if i.imagem %}
-            <img class="card-img-top" src="{{ i.imagem.url }}" alt="Card image cap">
+            <img class="card-img-top" src="{{ i.imagem.url }}" alt="{{ i.descricao }}">
             {% else %}
-            <img class="card-img-top" src="{%  static '/img/placeholder.jpg' %}" alt="Card image cap">
+            <img class="card-img-top" src="{%  static '/img/placeholder.jpg' %}" alt="{{ i.descricao }}">
             {% endif %}
             <div class="card-body">
-                <h4 class="card-title">{{i.descricao}}</h4>
-                <p class="card-text">"Status"</p>
+                <p class="card-title">{{i.descricao}}</p>
                 <div class="flex-row  bd-highlight p-2">
                     <!--- <a href="#" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></a> -->
-                    <a href="#" class="btn btn-primary"><i class="fa fa-print" aria-hidden="true"></i></a>
-                    <a href="{% url 'control:qrcode' i.id %}" target="_blank" class="btn btn-primary"><i class="fa fa-qrcode" aria-hidden="true"></i></a>
-                    <a href="#" class="btn btn-primary"><i class="fa fa-edit" aria-hidden="true"></i></a>
-                    <a href="#" class="btn btn-primary"><i class="fa fa-clock" aria-hidden="true"></i></a>
+                    <a href="#" class="m-1" ><i class="fa fa-print fa-2xs" aria-hidden="true"></i></a>
+                    <a href="{% url 'control:qrcode' i.id %}" class="m-1" target="_blank" ><i class="fa fa-qrcode" aria-hidden="true"></i></a>
+                    <a href="#" class="m-1"><i class="fa fa-clock" aria-hidden="true"></i></a>
 
                 </div>
             </div>
