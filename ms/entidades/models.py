@@ -2,8 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
-
-
 class Entidade(models.Model):
     TIPO_ENTIDADE = [
         ('G','Governo'),
@@ -19,7 +17,6 @@ class Entidade(models.Model):
     def __str__(self):
         return self.nome_razao
 
-
 class Contrato(models.Model):
     entidade = models.ForeignKey(Entidade,on_delete=models.PROTECT)
     numero = models.CharField(max_length=10)
@@ -33,11 +30,42 @@ class Contrato(models.Model):
     def __str__(self):
         return 'Contrato: {} / {}'.format(self.numero,self.ano)
 
-class Alas(models.Model):
+
+class Encarregado(models.Model):
+    pessoa = models.ForeignKey('cadastrounico.Pessoa', on_delete=models.PROTECT)
+    entidade = models.ForeignKey(Entidade,on_delete=models.PROTECT)
+
+    def __str__(self):
+        encarregado_str = '{} - {}'.format(self.nome_razao,self.entidade)
+        return encarregado_str
+
+class Turno(models.Model):
+    PERIODOS = [
+        ('M','MATUTINO'),
+        ('V','VESPERTINO'),
+        ('N','NOTURNO')
+    ]
+    descricao = models.CharField(max_length=255)
+    entidade = models.ForeignKey(Entidade,on_delete=models.PROTECT)
+    hora_inicio = models.TimeField()
+    hora_fim = models.TimeField()
+    periodo = models.CharField(choices=PERIODOS,max_length=1)
+    encarregados = models.ManyToManyField(Encarregado)
+
+class Especialidade(models.Model):
+    ATIVO = [
+        ('S','SIM'),
+        ('N','NÃO')
+    ]
+    entidade = models.ForeignKey(Entidade,on_delete=models.PROTECT)
+    descricao = models.CharField(max_length=255)
+    ativo = models.CharField(max_length=1,choices=ATIVO)
+
+class Setor(models.Model):
     nome = models.CharField(max_length=255)
     codigo = models.CharField(max_length=8)
     entidade = models.ForeignKey(Entidade, on_delete=models.PROTECT)
-    especialidade = models.CharField(max_length=255,blank=True)
+    especialidade = models.ForeignKey(Especialidade,on_delete=models.PROTECT)
 
 class TipoAmbiente(models.Model):
     RISCO = [
@@ -75,5 +103,4 @@ class StatusAmbiente(models.Model):
     ambiente = models.ForeignKey(Ambiente, on_delete=models.PROTECT)
     status = models.CharField(choices=STATUS, max_length=1)
     data_hora = models.DateTimeField(auto_created=True, auto_now=True)
-
     usuario = models.ForeignKey(User,on_delete=models.PROTECT)

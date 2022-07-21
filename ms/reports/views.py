@@ -1,9 +1,13 @@
 import functools
+import ssl
+
 import entidades.models as emd
 from django.conf import settings
+from django.utils import timezone
 from django.views.generic import DetailView
 
 from django_weasyprint import WeasyTemplateResponseMixin
+from django_weasyprint.utils import django_url_fetcher
 from django_weasyprint.views import WeasyTemplateResponse, WeasyTemplateView
 
 

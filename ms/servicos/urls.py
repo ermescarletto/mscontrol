@@ -11,7 +11,6 @@ app_name = 'servicos'
 
 urlpatterns = [
     path('check/<int:ambiente_id>/', ChecklistsAmbienteView.as_view(),name='checklist_servico'),
-    path('login/',LoginView.as_view(),name='login'),
     path('dashboard/',DashboardView.as_view(),name='dashboard'),
     path('qrcode/<int:ambiente_id>/', QrCodeView.as_view(), name='qrcode'),
     path('ambientes/',AmbientesView.as_view(), name='ambientes'),
@@ -23,4 +22,5 @@ urlpatterns = [
     path('api/check/<int:ambiente_id>/', APIAmbientesChecklists.as_view(), name='checklists_ambientes'),
     path('checklists/', ChecklistsView.as_view(),name='checklists'),
     path('api/checklist/', ChecklistViewset.as_view(), name='api_check'),
+    path('relatorios_ambientes/',RelatoriosAmbientes.as_view() ,name='relatorios_ambientes'),
 ]

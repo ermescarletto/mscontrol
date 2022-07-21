@@ -13,7 +13,7 @@ from rest_framework import status, viewsets
 from django.core.paginator import Paginator
 from rest_framework.permissions import IsAdminUser
 from .models import *
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 import entidades.models as emd
 import entidades.serializers as ems
 import qrcode
@@ -25,14 +25,18 @@ from .forms import *
 from io import BytesIO
 
 
-
+# INDEX VIEW '/' - Página inicial.
 class IndexView(View):
+
+    REDIRECT_URL = 'control/dashboard'
     def get(self,request):
         context = {
             'nome': 'MS Control',
         }
-        return render(request, "index.html", context=context)
-
+        if request.user.is_authenticated:
+            return redirect(self.REDIRECT_URL)
+        else:
+            return render(request, "index.html", context=context)
 
 class EntidadesView(View):
 
@@ -149,10 +153,6 @@ class APIStatusAmbiente(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-class LoginView(View):
-    template_name = 'login.html'
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
 
 class DashboardView(LoginRequiredMixin,View):
     template_name = 'dashboard_ambientes.html'
@@ -289,3 +289,13 @@ class AmbientesView(View):
 class ChecklistViewset(APIView):
     queryset = ChecklistPreenchido.objects.all()
     serializer_class = ChecklistPreenchido
+
+
+class RelatoriosAmbientes(LoginRequiredMixin, View):
+    template_name = "relatorios_ambientes.html"
+    login_url = '/user/login/'
+    def get(self, request):
+
+        return render(request, self.template_name)
+
+
